@@ -3,7 +3,7 @@ import axios from 'axios'
 module.exports = {
   get_publications(id) {
     let data = {
-      url: 'http://funny.kimvex.com/api/Publications',
+      url: 'https://funny.kimvex.com/api/Publications',
       method: 'get',
       params: {
         filter: {

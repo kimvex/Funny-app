@@ -69,7 +69,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.props.token, '??')
     this.props.changeStatusLogin ? this.changeOfDates() : ''
     return (
       <View style={styles.container}>
@@ -105,12 +104,13 @@ class App extends Component {
   }
 }
 
-const mapStateToProps = ({ token, changeStatusLogin, userId, page }) => {
+const mapStateToProps = ({ token, changeStatusLogin, userId, page, name }) => {
   return {
     token,
     changeStatusLogin,
     userId,
-    page
+    page,
+    name
   }
 }
 

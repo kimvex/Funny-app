@@ -13,6 +13,7 @@ import { Button, Icon, Avatar } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
 import _ from 'lodash';
+import ImageResizer from 'react-native-image-resizer';
 
 import { 
   changeVatarImage, 
@@ -35,6 +36,16 @@ class Perfil extends Component {
     password: '',
     password2: '',
     oldPassword: '',
+  }
+
+  componentDidMount = () => {
+    setTimeout(() => {
+      this.setState({
+        name: this.props.name,
+        phone: this.props.phone,
+        email: this.props.email,
+      })
+    }, 100);
   }
 
   pick = (cb) => {
@@ -65,7 +76,7 @@ class Perfil extends Component {
 
   upload = () => {
     this.setState({ uploading: true })
-    RNFetchBlob.fetch('POST', 'http://funny.kimvex.com/api/uploadImages/upload', {
+    RNFetchBlob.fetch('POST', 'https://funny.kimvex.com/api/uploadImages/upload', {
       Authorization: this.props.token,
       otherHeader: "foo",
       'Content-Type': 'multipart/form-data',
@@ -85,6 +96,7 @@ class Perfil extends Component {
   }
 
   render() {
+    console.log(this.props.avatar)
     return (
       <ScrollView style={styles.containerProfile}>
         <View style={styles.containerForImage}>
@@ -93,13 +105,14 @@ class Perfil extends Component {
             rounded
             title="Profile"
             source={{ 
-              uri: this.state.statusUrl 
-              ? this.state.url.uri 
-              : this.props.avatar 
+              uri: this.state.statusUrl
+              ? this.state.url.uri
+              : this.props.avatar,
+              cache: 'only-if-cached'
             }}
             onPress={() => {
               this.pick((source, data, response) => {
-                if (response.fileSize < 2500000) {
+                if (response.fileSize < 6500000) {
                   this.setState({
                     url: source,
                     statusUrl: true,
@@ -121,29 +134,33 @@ class Perfil extends Component {
             style={styles.inputForData}
             placeholder="Nombre"
             underlineColorAndroid="transparent"
-            onChangeText={t => this.state.name = t }
-            value={this.props.name}
+            onChangeText={t => this.setState({name:t})}
+            value={this.state.name ? this.state.name : this.props.name}
             />
           <TextInput
             style={styles.inputForData}
             placeholder="Email"
             underlineColorAndroid="transparent"
-            onChangeText={t => this.state.email = t}
-            value={this.props.email}
+            onChangeText={t => this.setState({email: t})}
+            value={this.state.email ? this.state.email : this.props.email}
             />
           <TextInput
             style={styles.inputForData}
             underlineColorAndroid="transparent"
-            onChangeText={t => this.state.phone = t}            
+            onChangeText={t => this.setState({phone: t})}            
             placeholder="Numero de telefono"
             keyboardType="numeric"
-            value={this.props.phone.toString()}
+            value={this.state.phone ? this.state.phone.toString() : this.props.phone.toString()}
             />
           <Button
             backgroundColor="#493FE9"
-            title="Cambiar information"
+            title="Cambiar información"
             onPress={() => {
-              console.log(this.state.name, '---' , this.props.name)
+              let data = {
+                name: '',
+                emial: '',
+                phone: ''
+              }
               if(
                 (this.state.name !== this.props.name 
                   && this.state.name.trim() !== '') 
@@ -174,6 +191,8 @@ class Perfil extends Component {
                 ) {
                   data.number = Number(this.state.phone)
                 }
+
+                console.log(data, 'data')
 
                 this.props.changeDataProfile(this.props.userId, data, this.props.token)
                 setTimeout(() => {

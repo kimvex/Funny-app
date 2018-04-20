@@ -225,20 +225,23 @@ export const updateUrlImage = (url) => {
   }
 }
 
-export const changeDataProfile = (id, data, token) => ({
-  type: 'UPDATE_INFORMATION_OF_USER',
-  payload: {
-    request: {
-      client: 'deafult',
-      url: `/Funnys/update?where={"id":"${id}"}`,
-      method: 'post',
-      data,
-      headers: {
-        Authorization: token
+export const changeDataProfile = (id, data, token) => {
+  console.log(data)
+  return ({
+    type: 'UPDATE_INFORMATION_OF_USER',
+    payload: {
+      request: {
+        client: 'deafult',
+        url: `/Funnys/update?where={"id":"${id}"}`,
+        method: 'post',
+        data,
+        headers: {
+          Authorization: token
+        }
       }
     }
-  }
-})
+  })
+}
 
 export const getNewDataInformation = (id, token) => ({
   type: 'GET_INFORMATION_OF_USER',

@@ -37,7 +37,7 @@ class Write extends Component {
   }
 
   upload = (data) => {
-    return RNFetchBlob.fetch('POST', 'http://funny.kimvex.com/api/uploadImages/upload', {
+    return RNFetchBlob.fetch('POST', 'https://funny.kimvex.com/api/uploadImages/upload', {
       Authorization: this.props.token,
       otherHeader: "foo",
       'Content-Type': 'multipart/form-data',
@@ -112,8 +112,7 @@ class Write extends Component {
             placeholder="Titulo"
             allowFontScaling={false}
             underlineColorAndroid="transparent"
-            ref={el => this.title = el}
-            value={this.title.value}      
+            ref={el => this.title = el}      
             onChangeText={text => this.title.value = text }
             placeholderStyle={sanFranciscoWeights.bold}
             style={styles.textTitlePublication}/>
@@ -122,7 +121,6 @@ class Write extends Component {
             multiline={true}
             underlineColorAndroid="transparent"
             ref={el => this.publication = el}
-            value={this.publication.value}
             onChangeText={text => this.publication.value = text}            
             placeholder="Escribe tu publicacion"
             style={styles.textBoxPublication}/>

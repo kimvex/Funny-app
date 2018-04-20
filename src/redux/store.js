@@ -4,7 +4,7 @@ import axiosMiddleware from 'redux-axios-middleware';
 import thunk from 'redux-thunk';
 
 const client = axios.create({
-  baseURL: 'http://funny.kimvex.com/api',
+  baseURL: 'https://funny.kimvex.com/api',
   responseType: 'json'
 })
 

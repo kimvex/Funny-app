@@ -40,6 +40,7 @@ export class VeiwPublication extends Component {
   }
 
   carousel = () => {
+    console.log(this.props.publication.images.length)
     if(this.props.publication.images.length > 0){
       return (
        <FlatList
@@ -49,7 +50,8 @@ export class VeiwPublication extends Component {
         keyExtractor={(item, index) => uuid.v4()}
         data={this.props.publication.images}
         renderItem={(rowData) => {
-          return <Image key={uuid.v4()} source={{ url: rowData.item.url }} style={{ width: 100, height: 100, margin: 10 }}/>
+          const url = `${rowData.item.url.split('/upload/')[0]}/upload/q_70/${rowData.item.url.split('/upload/')[1]}`
+          return <Image key={uuid.v4()} source={{ uri: url }} style={{ width: 100, height: 100, margin: 10 }}/>
         }}/>
       )
     }
@@ -87,7 +89,7 @@ export class VeiwPublication extends Component {
                         } else {
                           console.log('eliminando')
                           axios({
-                            url: `http://funny.kimvex.com/api/Likes/${exist.id}`,
+                            url: `https://funny.kimvex.com/api/Likes/${exist.id}`,
                             method: 'delete',
                             headers: {
                               Authorization: this.props.token
@@ -125,10 +127,12 @@ export class VeiwPublication extends Component {
             data={this.props.comments}
             keyExtractor={(item, index) => item.id}
             renderItem={(rowData) => {
+              const url = `${rowData.item.funny.imageProfile.url.split('/upload/')[0]}/upload/c_thumb,g_face,h_200,w_200/${rowData.item.funny.imageProfile.url.split('/upload/')[1]}`;
+              console.log(url)
               return (
                 <View style={styles.contentComment}>
                   <View style={styles.profileData}>
-                    <Image style={styles.imageProfile} resizeMode={'cover'} source={{ uri: rowData.item.funny.imageProfile.url}}/>
+                    <Image style={styles.imageProfile} resizeMode={'cover'} source={{ uri: url}}/>
                     <TouchableOpacity>
                       <Text style={[sanFranciscoWeights.bold]}>{rowData.item.funny.name}</Text>
                       <Text style={[sanFranciscoWeights.regular]}>{rowData.item.comment}</Text>

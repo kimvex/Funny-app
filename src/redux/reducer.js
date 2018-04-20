@@ -87,12 +87,14 @@ module.exports = (state, action) => {
         }
       break;
     case 'SET_A_NEW_IMAGE_OF_PROFILE':
+      const urlImg = `${action.payload.url.split('upload')[0]}/upload/c_thumb,g_face,h_500,w_500/${action.payload.url.split('upload')[1]}`;
         return {
           ...state,
-          avatar: action.payload.url
+          avatar: urlImg
         }
       break;
     case 'GET_INFORMATION_OF_USER_SUCCESS':
+        Alert.alert('Datos cambiados')
         return {
           ...state,
           name: action.payload.data.name,
@@ -144,7 +146,7 @@ module.exports = (state, action) => {
           email: action.payload.email,
           phone: action.payload.phone,
           id_imagen_profile: action.payload.id_imagen_profile,
-          avatar: action.payload.avatar,
+          avatar: `${action.payload.avatar.split('/upload/')[0]}/upload/c_thumb,g_face,h_200,w_200/${action.payload.avatar.split('/upload/')[1]}`,
           userId: action.payload.userId
         }
       break;
@@ -152,7 +154,7 @@ module.exports = (state, action) => {
         let { id, email, name, number, imageProfile } = action.payload.data;
         let data = {
           id_imagen_profile: imageProfile.id,
-          avatar: imageProfile.url,
+          avatar: `${imageProfile.url.split('/upload/')[0]}/upload/c_thumb,g_face,h_200,w_200/${imageProfile.url.split('/upload/')[1]}`,
           name,
           phone: number,
           email,
@@ -162,7 +164,7 @@ module.exports = (state, action) => {
         return {
           ...state,
           id_imagen_profile: imageProfile.id,
-          avatar: imageProfile.url,
+          avatar: `${imageProfile.url.split('/upload/')[0]}/upload/c_thumb,g_face,h_200,w_200/${imageProfile.url.split('/upload/')[1]}`,
           name,
           phone: number,
           email,
