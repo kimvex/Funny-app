@@ -6,7 +6,7 @@ module.exports = {
   // modal of PublicationView
   isOpen: false,
   stateOfPublication: false,
-  avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+  avatar: '',
   id_imagen_profile: '5acaea6a9681e00c76669d86',
   name: 'Benjamin De la cruz Martinez',
   email: 'benjamin@kimvex.com',

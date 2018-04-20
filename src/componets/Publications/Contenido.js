@@ -39,6 +39,7 @@ class Contenido extends Component {
         onLoadMoreAsync={this.morePublications}
       >
         <FlatList
+          style={{ paddingBottom: '20%' }}
           ListEmptyComponent={() => {
             return (
               <View style={styles.emptyContainer}>
