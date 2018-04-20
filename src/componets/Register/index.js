@@ -3,7 +3,8 @@ import {
   View,
   Text,
   StyleSheet,
-  TouchableOpacity
+  TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import { connect } from 'react-redux';
 import { FormLabel, FormInput, FormValidationMessage } from 'react-native-elements'
@@ -71,7 +72,7 @@ class LoginAndRegister extends Component {
 
   register = () => {
     return(
-      <View style={[styles.containerLogin, styles.topSection]}>
+      <ScrollView style={[styles.containerLogin]}>
         <FormLabel
           labelStyle={sanFranciscoWeights.bold}>Nombre</FormLabel>
         <FormInput 
@@ -156,14 +157,14 @@ class LoginAndRegister extends Component {
           color="#493FE9"
           backgroundColor="transparent" />
 
-      </View>
+      </ScrollView>
     )
   }
 
   render() {
     return (
-      <View style={styles.containerLoginAndRegister}>
-        <View style={[styles.alineaContent, this.state.section === "REGISTER" ? styles.positionSection : styles.positionNormal]}>
+      <ScrollView style={styles.containerLoginAndRegister}>
+        <View style={[styles.alineaContent]}>
           <Text style={[sanFranciscoWeights.bold, styles.textFloting]}>
             Funny
           </Text>
@@ -171,7 +172,7 @@ class LoginAndRegister extends Component {
         {
           this.state.section === 'LOGIN' ? this.login() : this.register()
         }
-      </View>
+      </ScrollView>
     )
   }
 }
@@ -179,33 +180,26 @@ class LoginAndRegister extends Component {
 const styles = StyleSheet.create({
   containerLoginAndRegister: {
     width: '100%',
-    height: '93%',
-    justifyContent: 'space-around',
     backgroundColor: 'white'
   },
   containerLogin: {
+    height: '68%',
+    marginBottom: 70
   },
   spaceInput: {
     marginBottom: 20
   },
   textFloting: {
-    fontSize: 80,
     textAlign: 'center',
+    fontSize: 80,
     color: iOSColors.purple
   },
   alineaContent: {
-    position: 'absolute',
     width: '100%',
   },
   topSection: {
     marginTop: 110
   },
-  positionSection: {
-    marginTop: 20
-  },
-  positionNormal: {
-    top: 100
-  }
 })
 
 const mapStateToProps = ({ changeStatusLogin, userId }) => {
