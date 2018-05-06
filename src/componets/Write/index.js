@@ -6,7 +6,10 @@ import {
   TextInput,
   TouchableOpacity,
   FlatList,
-  Image
+  Image,
+  NativeModules,
+  ImageStore,
+  Alert
 } from 'react-native';
 import { connect } from 'react-redux';
 import { sanFranciscoWeights, iOSColors } from 'react-native-typography'
@@ -16,6 +19,8 @@ import uuid from 'uuid'
 import Ionicons from 'react-native-vector-icons/dist/Ionicons'
 import Axios from 'axios';
 import { Icon } from 'react-native-elements';
+import ImgToBase64 from 'react-native-image-base64';
+import ImageResizer from 'react-native-image-resizer';
 
 import { pubicate, changeStateOfPublication } from '../../redux/actions'
 
@@ -102,9 +107,10 @@ class Write extends Component {
       })
     }, 1000);
   }
-
+  
   render() {
     this.props.stateOfPublication ? this.changeState() : ''
+    console.log(ImageResizer)
     return (
       <View style={styles.ContainerInformation}>
         <View style={styles.sectionPublicate}>
@@ -125,6 +131,52 @@ class Write extends Component {
             placeholder="Escribe tu publicacion"
             style={styles.textBoxPublication}/>
         </View>
+
+        <Icon
+          reverse
+          name='ios-eye-outline'
+          type='ionicon'
+          color={this.state.adding ? '#493FE9' : 'gray'}
+          containerStyle={styles.buttonImageDetection}
+          onPress={() => {
+            if (this.state.adding) {
+              this.pick((source, data, response) => {
+                ImageResizer.createResizedImage(source.uri, 200, 200, 'PNG', 10).then(resize => {
+                  console.log(resize)
+                  ImgToBase64.getBase64String(resize.uri).then(base64 => {
+                    Axios({
+                      url: 'https://vision.googleapis.com/v1/images:annotate?key=AIzaSyBDazYxYfnaOHupViW0FzPnxLqXutzilRY',
+                      method: 'post',
+                      data: {
+                        requests: [
+                          {
+                            image: {
+                              content: base64
+                            },
+                            features: [
+                              {
+                                type: 'TEXT_DETECTION',
+                                maxResults: 1
+                              }
+                            ]
+                          }
+                        ]
+                      }
+                    }).then(res => res.data)
+                      .then(res => {
+                        console.log(res)
+                        Alert.alert(res.responses[0].fullTextAnnotation.text)
+                      })
+                    .catch(err => {
+                      console.log(err)
+                    })
+                  }).catch(err => { return console.log(err)})
+                }).catch(err => { return console.log(err) })
+              })
+            }
+          }}
+        />
+
         <Icon
           reverse
           name='ios-create-outline'
@@ -142,7 +194,6 @@ class Write extends Component {
             style={styles.addMoreImage}
             onPress={() => {
             this.pick((source, data, response) => {
-              console.log(response, response.fileSize)
               if (response.fileSize < 2500000) {
                 this.setState({
                   carrousel: this.state.carrousel,
@@ -306,6 +357,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     zIndex: 1001,
     bottom: '20%',
+    right: 30
+  },
+  buttonImageDetection: {
+    position: 'absolute',
+    zIndex: 1001,
+    bottom: '30%',
     right: 30
   },
   actionPublicated: {

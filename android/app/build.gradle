@@ -95,7 +95,7 @@ def enableProguardInReleaseBuilds = false
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.funny"
@@ -149,6 +149,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-image-base64')
     compile project(':react-native-image-resizer')
     compile project(':react-native-fetch-blob')
     compile project(':react-native-image-picker')
